@@ -3,9 +3,9 @@ package com.example.music;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -13,23 +13,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
-import java.util.Map;
+public class LoginActivity extends AppCompatActivity {
 
-public class RegistrationActivity extends AppCompatActivity {
-
-    private Button registerButton, backButton;
-    private EditText nameText, emailText, passwordText;
+    private EditText emailText, passwordText;
     private FirebaseAuth myAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_login);
 
         myAuth = FirebaseAuth.getInstance();
         firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -37,39 +31,28 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null){
-                    Intent intent  = new Intent(RegistrationActivity.this, MainActivity.class);
+                    Intent intent  = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
             }
         };
 
-        registerButton = findViewById(R.id.register);
-        backButton =  findViewById(R.id.back);
-        emailText = findViewById(R.id.email);
-        passwordText = findViewById(R.id.password);
-        nameText = findViewById(R.id.name);
+        Button backButton = (Button) findViewById(R.id.back);
+        Button loginButton = (Button) findViewById(R.id.login);
+        emailText = (EditText) findViewById(R.id.email);
+        passwordText = (EditText) findViewById(R.id.password);
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String name = nameText.getText().toString();
                 final String email = emailText.getText().toString();
                 final String password = passwordText.getText().toString();
-                myAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
+                myAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(RegistrationActivity.this, "Error! Make sure password is at least 6 characters.", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            String userID = myAuth.getCurrentUser().getUid();
-                            DatabaseReference curUserId = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-                            Map userInfo = new HashMap<>();
-                            userInfo.put("name", name);
-                            userInfo.put("profilePicURL", "defaultImage");
-
-                            curUserId.updateChildren(userInfo);
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, "error signing in", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -79,7 +62,7 @@ public class RegistrationActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RegistrationActivity.this, LoginOrRegisterActivity.class);
+                Intent intent = new Intent(LoginActivity.this, LoginOrRegisterActivity.class);
                 startActivity(intent);
                 finish();
             }
