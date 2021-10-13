@@ -1,12 +1,9 @@
 package com.example.music;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -16,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -70,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         viewProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Profile.class);
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -179,5 +175,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void viewConnections(View view) {
+        Intent intent = new Intent(MainActivity.this, ViewConnectionsActivity.class);
+        startActivity(intent);
     }
 }

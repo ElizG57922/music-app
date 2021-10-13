@@ -56,25 +56,30 @@ public class RegistrationActivity extends AppCompatActivity {
                 final String name = nameText.getText().toString();
                 final String email = emailText.getText().toString();
                 final String password = passwordText.getText().toString();
-                myAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(RegistrationActivity.this, "Error! Make sure password is at least 6 characters.", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            String userID = myAuth.getCurrentUser().getUid();
-                            DatabaseReference curUserId = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-                            Map userInfo = new HashMap<>();
-                            userInfo.put("name", name);
-                            userInfo.put("profilePicURL", "defaultImage");
+                if (!name.equals("") && !email.equals("") && !password.equals("")) {
+                    myAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(RegistrationActivity.this, "Error! Make sure password is at least 6 characters.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                String userID = myAuth.getCurrentUser().getUid();
+                                DatabaseReference curUserId = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+                                Map userInfo = new HashMap<>();
+                                userInfo.put("name", name);
+                                userInfo.put("profilePicURL", "defaultImage");
 
-                            curUserId.updateChildren(userInfo);
+                                curUserId.updateChildren(userInfo);
+                            }
                         }
-                    }
-                });
+                    });
+                }
+                else{
+                    Toast.makeText(RegistrationActivity.this, "Fields cannot be blank", Toast.LENGTH_SHORT);
+                }
             }
         });
+
 
         backButton.setOnClickListener(new View.OnClickListener(){
             @Override
