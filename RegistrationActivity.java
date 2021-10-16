@@ -16,6 +16,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class RegistrationActivity extends AppCompatActivity {
 
     private Button registerButton, backButton;
@@ -41,11 +44,10 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         };
 
-        registerButton = (Button) findViewById(R.id.register);
-        backButton = (Button) findViewById(R.id.back);
-        emailText = (EditText) findViewById(R.id.email);
-        passwordText = (EditText) findViewById(R.id.password);
-        nameText = (EditText) findViewById(R.id.name);
+        registerButton = findViewById(R.id.register);
+        emailText = findViewById(R.id.email);
+        passwordText = findViewById(R.id.password);
+        nameText = findViewById(R.id.name);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,28 +55,27 @@ public class RegistrationActivity extends AppCompatActivity {
                 final String name = nameText.getText().toString();
                 final String email = emailText.getText().toString();
                 final String password = passwordText.getText().toString();
-                myAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(RegistrationActivity.this, "Error signing up. Make sure password is at least 6 characters.", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            String userID = myAuth.getCurrentUser().getUid();
-                            DatabaseReference curUserId = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("name");
-                            curUserId.setValue(name);
-                        }
-                    }
-                });
-            }
-        });
+                if (!name.equals("") && !email.equals("") && !password.equals("")) {
+                    myAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(RegistrationActivity.this, "Error! Make sure password is at least 6 characters.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                String userID = myAuth.getCurrentUser().getUid();
+                                DatabaseReference curUserId = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+                                Map userInfo = new HashMap<>();
+                                userInfo.put("name", name);
+                                userInfo.put("profilePicURL", "defaultImage");
 
-        backButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(RegistrationActivity.this, LoginOrRegisterActivity.class);
-                startActivity(intent);
-                finish();
+                                curUserId.updateChildren(userInfo);
+                            }
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(RegistrationActivity.this, "Fields cannot be blank", Toast.LENGTH_SHORT);
+                }
             }
         });
     }
