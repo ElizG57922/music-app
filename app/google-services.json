@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "554274389127",
+    "project_id": "musictinder-f1c20",
+    "storage_bucket": "musictinder-f1c20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554274389127:android:68f0870cfe424181bf0c22",
+        "android_client_info": {
+          "package_name": "com.example.music"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554274389127-76n44pf9d33gr18n46vskv1l4npucn6d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.music",
+            "certificate_hash": "ee8d5a41a4a3fc13e68f73ce289b03c813622030"
+          }
+        },
+        {
+          "client_id": "554274389127-5o1i8poeabsc7mqunno2g26trrkviu92.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-FAdluEOxn4iH7FO47wPzj-CZj9MeQ5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554274389127-5o1i8poeabsc7mqunno2g26trrkviu92.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
