@@ -27,7 +27,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolders> {
     @Override
     public MessageViewHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View layoutView= LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, null, false);
-        RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutView.setLayoutParams(params);
         MessageViewHolders row = new MessageViewHolders(layoutView);
         return row;
